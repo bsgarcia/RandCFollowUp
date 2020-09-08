@@ -2,7 +2,7 @@
 init;
 %-------------------------------------------------------------------------
 
-selected_exp = [5, 6.1, 6.2];
+selected_exp = [6, 7, 8];
 
 displayfig = 'on';
 sessions = [0, 1];
@@ -22,7 +22,7 @@ for exp_num = selected_exp
     
     [corr, cho, out2, p1, p2, ev1, ev2, ctch, cont1, cont2, dist] = ...
         DataExtraction.extract_sym_vs_sym_post_test(...
-        data, sub_ids, idx, sess);
+        data, sub_ids, idx, sessions);
     
     % --------------------------------------------------------------------
     % Compute for each symbol p of chosing depending on described cue value
@@ -37,9 +37,9 @@ for exp_num = selected_exp
             for k = 1:length(psym)
                 temp = ...
                     cho(i, logical((p2(i, :) == pcue(j)) .* (p1(i, :) == psym(k))));
-                for l = 1:length(temp)
-                    chose_symbol(i, j, k, l) = temp(l) == 1;
-                end
+                %for l = 1:length(temp)
+                    chose_symbol(i, j, k, 1) = mean(temp == 1);
+                %end
             end
         end
     end
@@ -73,7 +73,7 @@ for exp_num = selected_exp
         try 
              param = load(...
                  sprintf(...
-                 'data/post_test_fitparam_EE_exp_%d_%d', round(exp_num), sess));
+                 'data/post_test_fitparam_EE_exp_%d_%d', round(exp_num)));%, sess));
              beta1 = param.beta1;
              shift = param.shift;
              tosave = false;
@@ -118,7 +118,7 @@ for exp_num = selected_exp
         param.res = res;
         
         save(sprintf('data/post_test_fitparam_EE_exp_%d_%d',...
-            round(exp_num), sess),...
+            round(exp_num)),...%, sess),...
             '-struct', 'param');
     end
     

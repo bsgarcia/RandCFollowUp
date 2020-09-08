@@ -90,7 +90,7 @@ for exp_num = selected_exp
 %     end
 %         
     dd(1, :) = param1.beta1;%slope1(:, 2)';
-    dd(2, :) = param2.beta1;%slope2(:, 2)';
+    dd(2, :) = %slope2(:, 2)';
     
     bigdd{1, num} = dd(1,:)';
     bigdd{2, num} = dd(2, :)';
@@ -169,7 +169,7 @@ for c = 1:4
     for row = 1:length(slope_ed{c})
         i = i +1;
         T1 = table(i, c, slope_ed{c}(row), 1, 'variablenames',...
-            {'subject', 'exp_num', 'beta', 'modality'});
+            {'subject', 'exp_num', 'slope', 'modality'});
         T = [T; T1];
     end
 end
@@ -178,12 +178,12 @@ for c = 1:4
     for row = 1:length(slope_lt{c})
         i = i + 1;
         T1 = table(i, c, slope_lt{c}(row), 0, 'variablenames',...
-            {'subject', 'exp_num', 'beta', 'modality'});
+            {'subject', 'exp_num', 'slope', 'modality'});
         T = [T; T1];
     end
 end
 
-disp(fitglme(T, 'beta ~ 1 + exp_num*modality + (1|subject)'));
+disp(fitglme(T, 'slope ~ 1 + exp_num*modality + (1|subject)'));
 %writetable(T, 'data/LT_anova.csv');
     
 %     skyline_comparison_plot({bigdd{1,:}}',{bigdd{2,:}}',...

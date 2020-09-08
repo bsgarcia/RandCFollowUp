@@ -183,5 +183,9 @@ for c = 1:length(selected_exp)
     end
 end
 
-writetable(T, 'data/ED_PM_anova.csv');
+disp(fitglme(T, 'slope ~ 1 + exp_num*modality + (1|subject)'));
+
+
+
+%writetable(T, 'data/ED_PM_anova.csv');
     

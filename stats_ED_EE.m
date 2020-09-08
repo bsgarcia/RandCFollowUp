@@ -2,7 +2,7 @@
 init;
 %-------------------------------------------------------------------------
 
-selected_exp = [5, 6.2, 7.2];
+selected_exp = [5, 6.1, 6.2, 7.1, 7.2];
 sessions = [0, 1];
 
 % displayfig = 'on';
@@ -52,27 +52,27 @@ for exp_num = selected_exp
     slope1 = add_linear_reg(shift1, ev, orange_color);
     slope2 = add_linear_reg(shift2, ev, blue_color);      
     
-    brick_comparison_plot2(...
-        shift1',shift2',...
-        orange_color, blue_color, ...
-        [0, 1], 11,...
-        '',...
-        '',...
-        '', varargin, 1, x_lim, x_values);
-    
-    if num == 1
-        ylabel('Indifference point')
-    end
-    
-   
-    xlabel('Experienced cue win probability');
-    box off
-    hold on
-    
-    set(gca, 'fontsize', fontsize);
-    
-    %set(gca, 'ytick', [0:10]./10);
-    set(gca,'TickDir','out')
+%     brick_comparison_plot2(...
+%         shift1',shift2',...
+%         orange_color, blue_color, ...
+%         [0, 1], 11,...
+%         '',...
+%         '',...
+%         '', varargin, 1, x_lim, x_values);
+%     
+%     if num == 1
+%         ylabel('Indifference point')
+%     end
+%     
+%    
+%     xlabel('Experienced cue win probability');
+%     box off
+%     hold on
+%     
+%     set(gca, 'fontsize', fontsize);
+%     
+%     %set(gca, 'ytick', [0:10]./10);
+%     set(gca,'TickDir','out')
     
 %     title(sprintf('Exp. %s', num2str(exp_num)));
 %     
@@ -80,11 +80,11 @@ for exp_num = selected_exp
 %     figure('Renderer', 'painters',...
 %     'Position', [145,157,700,650], 'visible', 'on')
 %     
-%     dd(1, :) = slope1(:, 2)';
-%     dd(2, :) = slope2(:, 2)';
-%     
-%      bigdd{1, num} = dd(1,:);
-%     bigdd{2, num} = dd(2, :);
+    dd(1, :) = beta1;%slope1(:, 2)';
+    dd(2, :) = beta2;%slope2(:, 2)';
+    
+     bigdd{1, num} = dd(1,:)';
+     bigdd{2, num} = dd(2, :)';
 %     skylineplot(dd,...
 %         [orange_color; blue_color],...
 %         min(dd,[],'all')-.08,...
@@ -130,26 +130,25 @@ mkdir('fig/exp', 'post_test_PM');
             sprintf('fig/exp/post_test_PM/full2.svg',...
             num2str(exp_num)));
 
-return
-
-figure('Renderer', 'painters',...
-    'Position', [145,157,700,650], 'visible', 'on')
-
-skyline_comparison_plot({bigdd{1,:}}',{bigdd{2,:}}',...
-    [orange_color; blue_color],...
-    -0.7,...
-    1.75,...
-    20,...
-    '',...
-    '',...
-    '',...
-    1:4,...
-    0);
-ylabel('Slope');
-set(gca, 'tickdir', 'out');
-box off
-
-
+% close all
+% figure('Renderer', 'painters',...
+%     'Position', [145,157,700,650], 'visible', 'on')
+% 
+% skyline_comparison_plot({bigdd{1,:}}',{bigdd{2,:}}',...
+%     [orange_color; blue_color],...
+%     -0.7,...
+%     1.75,...
+%     20,...
+%     '',...
+%     '',...
+%     '',...
+%     1:4,...
+%     0);
+% ylabel('Slope');
+% set(gca, 'tickdir', 'out');
+% box off
+% 
+% close all
 
 slope_ed = {bigdd{1,:}}';
 slope_ee = {bigdd{2,:}}';
@@ -160,7 +159,7 @@ for c = 1:length(selected_exp)
     for row = 1:length(slope_ed{c})
         i = i +1;
         T1 = table(i, c, slope_ed{c}(row), 0, 'variablenames',...
-            {'subject', 'exp_num', 'slope', 'modality'});
+            {'subject', 'exp_num', 'beta', 'modality'});
         T = [T; T1];
     end
 end
@@ -169,9 +168,9 @@ for c = 1:length(selected_exp)
     for row = 1:length(slope_ee{c})
         i = i + 1;
         T1 = table(i, c, slope_ee{c}(row), 1, 'variablenames',...
-            {'subject', 'exp_num', 'slope', 'modality'});
+            {'subject', 'exp_num', 'beta', 'modality'});
         T = [T; T1];
     end
 end
-
-writetable(T, 'data/ED_EE_anova.csv');
+disp(fitglme(T, 'beta ~ 1 + exp_num*modality + (1|subject)'));
+%writetable(T, 'data/ED_EE_anova.csv');
