@@ -2,14 +2,12 @@
 init;
 %-------------------------------------------------------------------------
 
-selected_exp = [8];
+selected_exp = [5, 6.1, 6.2];
 
 displayfig = 'off';
 sessions = [0, 1];
-
-figure('Renderer', 'painters',...
-    'Position', [145,157,828*length(selected_exp)/37,600/37], 'visible', displayfig)
-
+figure('Renderer', 'painters','Units', 'centimeters',...
+    'Position', [0,0,5.3*length(selected_exp), 5.3/1.25], 'visible', displayfig)
 num = 0;
 for exp_num = selected_exp
     num = num + 1;
@@ -91,7 +89,7 @@ for exp_num = selected_exp
         
         lin3 = plot(...
             pcue(isfinite(prop(i, :))).*100,  prop(i,isfinite(prop(i, :))).*100,...
-            'Color', green_color, 'LineWidth', 4.5...% 'LineStyle', '--' ...
+            'Color', green_color, 'LineWidth', 1.5...% 'LineStyle', '--' ...
             );
         
         
@@ -101,18 +99,21 @@ for exp_num = selected_exp
         
         [xout, yout] = intersections(lin3.XData, lin3.YData, lin1.XData, lin1.YData);
         
-        sc2 = scatter(xout, yout, 200, 'MarkerFaceColor', lin3.Color,...
+        sc2 = scatter(xout, yout, 15, 'MarkerFaceColor', lin3.Color,...
             'MarkerEdgeColor', 'w');
         sc2.MarkerFaceAlpha = alpha(i);
         
         if num == 1
             ylabel('P(choose symbol) (%)');
         end
-        xlabel('Lottery p(win) (%)');
+        xlabel('Symbol p(win) (%)');
         
         ylim([-0.08*100, 1.08*100]);
         xlim([-0.08*100, 1.08*100]);
-        
+          
+        set(gca,'TickDir','out')
+        set(gca, 'FontSize', fontsize);
+        xticks([0:20:100])
         box off
     end
     
@@ -123,6 +124,8 @@ for exp_num = selected_exp
     clear pp pcue psym temp err_prop prop i
     
 end
+
+
 mkdir('fig/exp', 'ind_curves_bhv');
 saveas(gcf, ...
-    sprintf('fig/exp/ind_curves_bhv/full_ED.svg'));
+    sprintf('fig/exp/ind_curves_bhv/full_EE.svg'));

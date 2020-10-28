@@ -10,14 +10,14 @@ displayfig = 'off';
 
 
 figure('Renderer', 'painters','Units', 'centimeters',...
-    'Position', [0,0,6, 6*length(selected_exp)], 'visible', displayfig)
+    'Position', [0,0,5.3*length(selected_exp), 5.3/1.25], 'visible', displayfig)
 %subaxis(4,6,1, 'Spacing', 0.03, 'Padding', 0, 'Margin', 0, 'SpacingVert', 0.03);
 
 num = 0;
 for exp_num = selected_exp
     num = num + 1;
     
-      
+    
     sess = round((exp_num - round(exp_num)) * 10 - 1);
     sess = sess .* (sess ~= -1);
     % load data
@@ -53,7 +53,7 @@ for exp_num = selected_exp
             sim_params.model = 2;
             [midpoints, throw]  = get_qvalues(sim_params);
             
-        otherwise 
+        otherwise
             error('modality does not exist');
     end
     
@@ -63,15 +63,15 @@ for exp_num = selected_exp
     
     ev = unique(p1)'.*100;
     varargin = ev;
-%     range = -8:11.6:108;
-%     x_values = range([2, 3, 4, 5, 6, 7, 8, 9]);
+    %     range = -8:11.6:108;
+    %     x_values = range([2, 3, 4, 5, 6, 7, 8, 9]);
     x_values = ev;
     
     
-    x_lim = [-2, 102];
+    x_lim = [0, 100];
     y_lim = [-8, 108];
-   
-    subplot(length(selected_exp), 1, num)
+    
+    subplot(1,length(selected_exp), num)
     
     add_linear_reg(midpoints.*100, ev, color);
     brickplot(...
@@ -82,23 +82,23 @@ for exp_num = selected_exp
         '',...
         '', varargin, 1, x_lim, x_values, .18);
     
-    if num == length(selected_exp)
-        xlabel('Symbol p(win) (%)');
-
+    if num == 1
+        ylabel('Estimated p(win) (%)');
+        
     end
     
-        ylabel('Estimated p(win) (%)');
-
+    xlabel('Symbol p(win) (%)');
+    
     box off
     hold on
     
     %set(gca, 'ytick', [0:10]./10);
     set(gca,'TickDir','out')
-    set(gca, 'fontsize', fontsize);    
-        
+    set(gca, 'fontsize', fontsize);
+    
 end
-% 
+%
 mkdir('fig/exp', 'brickplot');
-        saveas(gcf, ...
-            sprintf('fig/exp/brickplot/%s.svg',...
-            modality));
+saveas(gcf, ...
+    sprintf('fig/exp/brickplot/%s.svg',...
+    modality));

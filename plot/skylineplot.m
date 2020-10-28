@@ -42,7 +42,11 @@ for n = 1:Nbar
     % PLOT THE VIOLINS
     
     % calculate kernel density estimation for the violin
-    [density, value] = ksdensity(DataMatrix, 'Bandwidth', 0.9 * min(std(DataMatrix), iqr(DataMatrix)/1.34) * Nsub^(-1/5)); % change Bandwidth for violin shape. Default MATLAB: std(DataMatrix)*(4/(3*Nsub))^(1/5)
+    [density, value] = ksdensity(...
+        DataMatrix,...
+        'Bandwidth', 0.9 * min(std(DataMatrix),...
+        iqr(DataMatrix)/1.34) * Nsub^(-1/5)); 
+    % change Bandwidth for violin shape. Default MATLAB: std(DataMatrix)*(4/(3*Nsub))^(1/5)
     density = density(value >= min(DataMatrix) & value <= max(DataMatrix));
     value = value(value >= min(DataMatrix) & value <= max(DataMatrix));
     value(1) = min(DataMatrix);
@@ -79,7 +83,7 @@ for n = 1:Nbar
         % CONFIDENCE INTERVAL
     rectangle('Position',[n, curve - sem*conf, Wbar/2, sem*conf*2],...
         'EdgeColor',Colors(n,:),...
-        'LineWidth',1);
+        'LineWidth',.3);
     hold on
     
     % INDIVIDUAL DOTS
@@ -98,12 +102,14 @@ for n = 1:Nbar
     jitter=abs(zscore(1:length(DataMatrix))'/max(zscore(1:length(DataMatrix))'));
     
     if ~noscatter
-        scatter(n - Wbar/10 - jitter.*(Wbar/2- Wbar/10), DataMatrix, markersize,...
+        x = n - Wbar/10 - jitter.*(Wbar/2- Wbar/10);
+        y = DataMatrix;
+        
+        scatter(x, y, markersize,...
             Colors(n,:),'filled',...
-            'marker','o',...
-            'MarkerEdgeColor', 'white',...
-            'MarkerFaceAlpha',0.4);
+            'MarkerFaceAlpha',0.4);% 'markeredgecolor', 'w');
         hold on
+        
     end
     
     % MEAN HORIZONTAL BAR
@@ -114,14 +120,14 @@ for n = 1:Nbar
 %     end
     xMean = [n ; n + Wbar/2];
     yMean = [curve; curve];
-    plot(xMean,yMean,'-','LineWidth',1,'Color','k');
+    plot(xMean,yMean,'-','LineWidth',.3,'Color','k');
     hold on
     
     % ERROR BARS
     errorbar(n+Wbar/4,curve,sem,...
         'Color','k',...Colors(n,:),...
-        'LineStyle','none',...  'CapSize',3,...
-        'LineWidth',1);
+        'LineStyle','none','CapSize',0.7,...%,'CapWidth', 0.3,...
+        'LineWidth',.3);
     hold on
 end
 

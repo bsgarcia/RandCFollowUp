@@ -2,9 +2,9 @@
 init;
 %-------------------------------------------------------------------------
 
-selected_exp = [1,2,3,4];
+selected_exp = [5, 6.1, 6.2];
 
-displayfig = 'on';
+displayfig = 'off';
 sessions = [0, 1];
 
 figure('Renderer', 'painters','Units', 'centimeters',...
@@ -127,4 +127,4 @@ for exp_num = selected_exp
 end
 mkdir('fig/exp', 'ind_curves_bhv');
 saveas(gcf, ...
-    sprintf('fig/exp/ind_curves_bhv/full_ED.svg'));
+    sprintf('fig/exp/ind_curves_bhv/fig5.svg'));

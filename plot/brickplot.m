@@ -121,7 +121,7 @@ x_lim = [min(varargin), max(varargin)];%get(gca, 'YLim');get(gca, 'XLim');
 y_lim = [min(varargin), max(varargin)];%get(gca, 'YLim');
 
 y0 = plot(linspace(x_lim(1), x_lim(2), 10),...
-    ones(10,1).*50, 'LineStyle', '--', 'Color', 'k', 'linewidth', .6);
+    ones(10,1).*50, 'LineStyle', '--', 'Color', 'k', 'linewidth', .4);
 y0.Color(4) = .45;
 uistack(y0, 'bottom');
 
@@ -130,7 +130,7 @@ hold on
 x = linspace(x_lim(1), x_lim(2), 10);
 
 y = linspace(y_lim(1), y_lim(2), 10);
-p0 = plot(x, y, 'linewidth', .6, 'LineStyle', '--', 'Color', 'k');
+p0 = plot(x, y, 'linewidth', .4, 'LineStyle', '--', 'Color', 'k');
 
 p0.Color(4) = .45;
 hold on

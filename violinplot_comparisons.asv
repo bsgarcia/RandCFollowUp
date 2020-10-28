@@ -5,10 +5,10 @@ init;
 %-------------------------------------------------------------------------
 % parameters of the script
 %-------------------------------------------------------------------------
-selected_exp = [5, 6.1, 6.2];
-modalities = {'ED', 'EE'};
+selected_exp = [1, 2, 3, 4];
+modalities = {'LE', 'ED', 'PM'};
 displayfig = 'off';
-colors = [orange_color; green_color];
+colors = [blue_color; orange_color; magenta_color];
 
 %-------------------------------------------------------------------------
 % prepare data
@@ -103,7 +103,7 @@ for exp_num = selected_exp
     
     subplot(1, length(selected_exp), num)
     
-    skylineplot(slope(:, :, 2), 3.8,...
+    skylineplot(slope(:, :, 2), 3,...
         colors,...
         -1,...
         1.7,...
@@ -112,7 +112,7 @@ for exp_num = selected_exp
         '',...
         '',...
         modalities,...
-    0);
+        0);
     
     if num == 1
         ylabel('Slope');

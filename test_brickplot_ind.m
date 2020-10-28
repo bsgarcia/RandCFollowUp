@@ -1,7 +1,7 @@
-% --------------------------------------------------------------------
-% This script
-% computes correct choice rate then plots the article figs
-% --------------------------------------------------------------------
+% ------------------------------------------------------------------------%
+% This script                                                             %
+% computes correct choice rate then plots the article figs                %
+% ------------------------------------------------------------------------%
 init;
 
 selected_exp = [1, 2, 3, 4];
@@ -10,7 +10,7 @@ sessions = [0, 1];
 displayfig = 'off';
 
 figure('Renderer', 'painters','Units', 'centimeters',...
-    'Position', [0,0,5.3*length(selected_exp), 5.15/1.25], 'visible', displayfig)
+    'Position', [0,0,5.3*length(selected_exp), 5.3/1.25], 'visible', displayfig)
    
 num = 0;
 for exp_num = selected_exp
@@ -43,14 +43,9 @@ for exp_num = selected_exp
         end
     end
     
-%     for i = 1:4
-%         mn(i) = mean(subcorr(i, :));
-%         err(i) = std(subcorr(i,:))./sqrt((length(subcorr(i,:))));
-%     end
-    
-    % ------------------------------------------------------------------------
-    % Plot fig
-    % -------------------------------------29-----------------------------------  
+    % ---------------------------------------------------------------------%
+    % Plot 
+    % ---------------------------------------------------------------------% 
     x_lim = [-8, 108];
     y_lim = [-8, 108];
     range = -8:108;
@@ -59,7 +54,10 @@ for exp_num = selected_exp
     varargin = x_values;
    
     subplot(1, length(selected_exp), num)
-    
+    plot(...
+        linspace(x_values(1), x_values(end), 12), ones(12,1)*50,...
+        'LineStyle', ':', 'Color', [0, 0, 0], 'HandleVisibility', 'off');
+    hold on
     %add_linear_reg(midpoints.*100, ev, color);
     brickplot2(...
         flipud(subcorr),...
