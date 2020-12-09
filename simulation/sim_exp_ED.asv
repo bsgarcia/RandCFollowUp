@@ -38,7 +38,7 @@ function [a, cont1, cont2, p1, p2, ev1, ev2, ll] = sim_exp_ED(...
             for v = ev1(sub, :)
 
                 count = count + 1;
-                qv1(i, count) = Q(sub, ...
+                qv1(i, count) = %Q(sub, ...
                     find(v == unique(ev1(sub,:))));
             end
         end
@@ -99,8 +99,7 @@ function [a, cont1, cont2, p1, p2, ev1, ev2, ll] = sim_exp_ED(...
     p1 = repmat(p1(1:nsub,:), nagent, 1);
     p2 = repmat(p2(1:nsub,:), nagent, 1);
     ev1 = repmat(ev1(1:nsub,:), nagent, 1);
-    ev2 = repmat(ev2(1:nsub,:), nagent, 1);
-    
-    ll = cho==a;
+    ev2 = repmat(ev2(1:nsub,:), nagent, 1);  
+    ll = sum(cho==a, 'all')/(ntrials*nsub);
     
 end

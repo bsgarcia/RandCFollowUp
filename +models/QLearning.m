@@ -118,8 +118,8 @@ classdef QLearning < handle
                     
                 case 2
                     if v1 ~= v2
-                        [throw, am] = max([v1, v2]);
-                        p = (am == [1, 2]);
+                        [throw, choice] = max([v1, v2]);
+                        return 
                     else
                         p = [0.5, 0.5];
                     end
