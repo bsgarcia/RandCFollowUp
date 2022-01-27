@@ -5,8 +5,8 @@ init;
 %-------------------------------------------------------------------------%
 % parameters of the script                                                %
 %-------------------------------------------------------------------------%
-selected_exp = [1, 2, 3, 5, 6, 7];
-displayfig = 'off';
+selected_exp = [1.1, 1.2];
+displayfig = 'on';
 colors = [orange];
 % filenames
 filename = 'Fig2B';
@@ -24,6 +24,7 @@ for exp_num = selected_exp
     num = num + 1;
     
     data = de.extract_ED(exp_num);
+    LE = de.extract_LE(exp_num);
     
     nsub = data.nsub;
     p1 = data.p1;

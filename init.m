@@ -30,7 +30,7 @@ filenames = {
    'block_complete_mixed',  'block_complete_mixed_2s',...
    'block_complete_mixed_2s_amb_final',...
    'block_complete_mixed_2s_amb_heuristic'};
-%filenames = {'test2'};
+filenames = {'new_data'};
 
 folder = 'data';
 
@@ -50,6 +50,7 @@ allowed_nb_of_rows = [...
     648, 658,... %exp 6, 7, 8
     742, 752,746 ... %exp 6, 7, 8
     216,... %exp 4
+    566+12*2+4,566+(12*2+4)*2 ... % exp 10
     ];
 
 

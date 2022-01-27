@@ -51,20 +51,23 @@ function [Q, params] = get_qvalues(sim_params)
 
         case 2
             data = sim_params.de.extract_PM(sim_params.exp_num);
-            dd = load(sprintf('data/fit/%s_learning_%d', ...
-                sim_params.exp_name, sim_params.sess));
-            parameters = dd.data('parameters');
+%             dd = load(sprintf('data/fit/%s_learning_%d', ...
+%                 sim_params.exp_name, sim_params.sess));
+%             parameters = dd.data('parameters');
+% 
+%             params.alpha1 = parameters{1}(:, 2);
+%             params.beta1 = parameters{1}(:, 1);
+%          
 
-            params.alpha1 = parameters{1}(:, 2);
-            params.beta1 = parameters{1}(:, 1);
-            
-
+            params = struct()
+           
             for sub = 1:size(data.cho, 1)
                 i = 1;      
 
-                for p = unique(data.p1)'
-                    Q(sub, i) = mean(data.cho(sub, (data.p1(sub, :) == p))./100);
-                    params.corr(sub, i) = abs(Q(sub, i) -  p) <= .1;
+                for p = unique(data.p1(data.op1==1))'
+                    mask = logical((data.p1(sub, :) == p).*(data.op1(sub,:)==1));
+                    Q(sub, i) = mean(data.cho(sub, mask)./100);
+%                     params.corr(sub, i) = abs(Q(sub, i) -  p) <= .1;
                     i = i + 1;          
                 end
 

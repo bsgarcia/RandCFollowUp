@@ -5,9 +5,9 @@ init;
 %-------------------------------------------------------------------------%
 % parameters of the script                                                %
 %-------------------------------------------------------------------------%
-selected_exp = [8];
+selected_exp = [1.2];
 displayfig = 'on';
-colors = [green];
+colors = [blue];
 % filenames
 filename = 'Fig3B';
 figfolder = 'fig';
@@ -23,7 +23,7 @@ num = 0;
 for exp_num = selected_exp
     num = num + 1;
     
-    data = de.extract_EE(exp_num);
+    data = de.extract_nofixed_LE(exp_num);
     
     nsub = data.nsub;
     p1 = data.p1;

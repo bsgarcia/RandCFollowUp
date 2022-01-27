@@ -1,7 +1,7 @@
 %-------------------------------------------------------------------------
 init;
 %-------------------------------------------------------------------------
-selected_exp = [1, 2, 3, 4];
+selected_exp = [1.1, 1.2];
 displayfig = 'on';
 
 figure('Renderer', 'painters','Units', 'centimeters',...
@@ -36,7 +36,11 @@ for exp_num = selected_exp
     sim_params.nsub = nsub;
                     
     sim_params.model = 1;
-    [midpoints1, throw] = get_qvalues(sim_params);
+    d = load(...
+                    sprintf('data/midpoints_%s_exp_%d_%d_mle',...
+                    'EE', round(exp_num), sess));
+    midpoints1  = d.midpoints;
+
                                 
     param = load(...
                     sprintf('data/midpoints_%s_exp_%d_%d_mle',...
@@ -53,6 +57,7 @@ for exp_num = selected_exp
     sim_params.model = 2;
     [midpoints3, throw] = get_qvalues(sim_params);
     
+    
     ev = unique(p1);
     varargin = ev;
     x_values = ev;
@@ -60,7 +65,7 @@ for exp_num = selected_exp
    
     subplot(1, length(selected_exp), num)
 
-    slope1 = add_linear_reg(midpoints1.*100, ev, blue);  
+    slope1 = add_linear_reg(midpoints1.*100, ev, green);  
     hold on
     
     slope2 = add_linear_reg(midpoints2.*100, ev, orange);
@@ -71,7 +76,7 @@ for exp_num = selected_exp
     
     brick_comparison_plot_3(...
         midpoints1'.*100,midpoints2'.*100,midpoints3'.*100,...
-        blue, orange, magenta, ...
+        green, orange, magenta, ...
         x_lim, [-8, 108], fontsize,...
         '',...
         '',...
