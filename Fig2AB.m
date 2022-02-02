@@ -20,9 +20,10 @@ figure('Renderer', 'painters','Units', 'centimeters',...
     'Position', [0,0,5.3*length(selected_exp), 5.3/1.25], 'visible', displayfig)
 
 num = 0;
-for exp_num = selected_exp
-    num = num + 1;
-    
+
+for exp_num = selected_exp%
+    num = num + 1;        %
+                          %
     data = de.extract_nofixed_LE(exp_num);
     
     nsub = data.nsub;

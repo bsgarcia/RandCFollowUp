@@ -18,24 +18,29 @@
 %dd = dd(~isnan(dd))
 
 data = readtable('tt.csv');
-d = data;
-d2 = data;
+
 %d = data(:, strcmp(data.EXP, 'NoFixed1'));
-mask_1 = logical(strcmp(data.EXP, 'NoFixed1'));
-mask_2 = logical(ismember(data.SESSION, [0, 1]));
-mask = logical(mask_1.*mask_2);
-data.SESSION(mask) = data.SESSION(mask)==0;
-% sub_ids = unique(data.ID);
-% 
-% for i = 1:length(sub_ids)
-%     
-%     mask_sub = strcmp(data.ID, sub_ids(i));
-%     mask_sess = ismember(data.SESSION, [0, 1]);
-%     mask_eli = ismember(data.ELIC, [-1, 0]);
-%     mask_corr = data.CORRECT_CHOICE == 1;
-%     
-%     a = sum(data(mask_eli&mask_sess&mask_sub&mask_corr, :).OUT);
-%     b = mean(data(mask_eli&mask_sess&mask_sub,:).CORRECT_CHOICE);
-%     disp(a)
-%     disp(b)
-% end
+mask_1 = logical(strcmp(data.EXP, 'NoFixed2'));
+%mask_2 = logical(ismember(data.SESSION, [0, 1]));
+%mask = logical(mask_1.*mask_2);
+%data.SESSION(mask_1) = data.SESSION(mask_1)==0;
+sub_ids = unique(data.ID);
+
+for i = 1:length(sub_ids)
+    
+    mask_sub = strcmp(data.ID, sub_ids(i));
+    mask_sess = ismember(data.SESSION, [0,1]);
+    mask_eli = ismember(data.ELIC, [0, -1]);
+    mask_t = ismember(data.TRIAL, [151]);
+    mask_corr = data.CORRECT_CHOICE == 1;
+    
+    a = sum(data(mask_eli&mask_sess&mask_sub, :).OUT);
+    r = max(data(mask_sess&mask_sub, :).REW);
+    if size(data(mask_sub, :),1) > 500
+        fprintf('%s,%.3f \n',sub_ids{i}, a.*0.0122+2.5);
+    end
+    b = a.*0.0122+2.5;
+    dd(i) = b;
+    %b = mean(data(mask_eli&mask_sess&mask_sub,:).CORRECT_CHOICE);
+   
+end
