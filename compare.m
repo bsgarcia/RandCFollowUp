@@ -7,9 +7,9 @@ show_current_script_name(mfilename('fullpath'));
 % parameters of the script                                                %
 %-------------------------------------------------------------------------%
 selected_exp = [1.1, 1.2];
-modalities = {'LE', 'EE', 'ES', 'SP'};
+modalities = {'LE', 'ES', 'EE', 'SP'};
 displayfig = 'on';
-colors = [blue;green;orange;magenta];
+colors = [blue;orange;green;magenta];
 % filenames
 filename = 'FigAmbViolin';
 figfolder = 'fig';
@@ -46,7 +46,7 @@ for exp_num = selected_exp
     
     % prepare data structure
     midpoints = nan(length(modalities), nsub, nsym);
-    slope = nan(length(modalities), nsub, 2);
+    %slope = nan(length(modalities), nsub, 2);
     reshape_midpoints = nan(nsub, nsym);
     
     sim_params.exp_num = exp_num;
@@ -84,13 +84,13 @@ for exp_num = selected_exp
                   
         % fill data
         reshape_midpoints(:, :) = midpoints(mod_num, :, :);
-        slope(mod_num,:,:) = add_linear_reg(...
+        slope{num}(mod_num,:,:) = add_linear_reg(...
             reshape_midpoints.*100, p1, colors(mod_num, :));
         
         % fill data for stats
         for sub = 1:nsub
             T1 = table(...
-                sub+sub_count, num, slope(mod_num, sub, 2),...
+                sub+sub_count, num, slope{num}(mod_num, sub, 2),...
                 {modalities{mod_num}}, 'variablenames',...
                 {'subject', 'exp_num', 'slope', 'modality'}...
                 );
@@ -99,13 +99,15 @@ for exp_num = selected_exp
     end
     sub_count = sub_count+sub;
     
-    %---------------------------------------------------------------------%
-    % Plot                                                                %
-    % --------------------------------------------------------------------%
+end
+
+%---------------------------------------------------------------------%
+% Plot                                                                %
+% --------------------------------------------------------------------%
     subplot(1, length(selected_exp), num)
         
     
-    skylineplot(slope(:, :, 2), 8,...
+    skyline_comparison_plot(slope{1}(:, :, 2),slope{2}(:, :, 2), ...
         colors,...
         -1.2,...
         1.5,...
@@ -115,7 +117,7 @@ for exp_num = selected_exp
         '',...
         modalities);
     
-    title(sprintf('Sess. %s', num2str(sess+1)));
+    %title(sprintf('Sess. %s', num2str(sess)));
     hold on 
     plot([1,length(modalities)], [0, 0], 'color', 'k', 'linestyle', ':')
     hold on 
@@ -127,7 +129,6 @@ for exp_num = selected_exp
     box off
     set(gca, 'fontname', 'arial');
     
-end
 
 %-------------------------------------------------------------------------%
 % Save fig and stats                                                      %

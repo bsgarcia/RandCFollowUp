@@ -20,7 +20,8 @@
 data = readtable('tt.csv');
 
 %d = data(:, strcmp(data.EXP, 'NoFixed1'));
-mask_1 = logical(strcmp(data.EXP, 'NoFixed2'));
+mask_1 = logical(strcmp(data.EXP, 'NoFixed1'));
+data = data(mask_1,:);
 %mask_2 = logical(ismember(data.SESSION, [0, 1]));
 %mask = logical(mask_1.*mask_2);
 %data.SESSION(mask_1) = data.SESSION(mask_1)==0;
@@ -37,7 +38,7 @@ for i = 1:length(sub_ids)
     a = sum(data(mask_eli&mask_sess&mask_sub, :).OUT);
     r = max(data(mask_sess&mask_sub, :).REW);
     if size(data(mask_sub, :),1) > 500
-        fprintf('%s,%.3f \n',sub_ids{i}, a.*0.0122+2.5);
+        fprintf('%s,%.2f\n',sub_ids{i}, a.*0.0122+2.5);
     end
     b = a.*0.0122+2.5;
     dd(i) = b;

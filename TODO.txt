@@ -1,0 +1,3 @@
+- Check fig violin 5
+- check ES/EE fit with beta set to 100
+- check heuristic > instead of >=

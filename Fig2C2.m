@@ -1,7 +1,7 @@
 %-------------------------------------------------------------------------
 init;
 %-------------------------------------------------------------------------
-selected_exp = [1, 2, 3, 4];
+selected_exp = [1.1, 1.2];
 displayfig = 'on';
 
 figure('Renderer', 'painters','Units', 'centimeters',...
@@ -29,13 +29,15 @@ for exp_num = selected_exp
     sim_params.sess = sess;
     sim_params.exp_name = name;
     sim_params.nsub = nsub;
-                    
-    sim_params.model = 1;
+    sim_params.model=1;
+    if sess==1
+        sim_params.model = 3;
+    end
     [midpoints2, throw] = get_qvalues(sim_params);
                                 
     param = load(...
                     sprintf('data/midpoints_%s_exp_%d_%d_mle',...
-                    'ED', round(exp_num), sess));
+                    'ES', round(exp_num), sess));
                 
     midpoints1 = param.midpoints;
     
@@ -63,10 +65,12 @@ for exp_num = selected_exp
         ylabel('Estimated p(win) (%)')
     end
    
-    xlabel('Symbol p(win) (%)');
+    xlabel('E-option p(win) (%)');
     box off
     hold on
     
     set(gca,'tickdir','out')
 
 end
+
+saveas(gcf, 'Fig2C.svg')

@@ -4,17 +4,24 @@ clear all
 % data
 p_lot = [0:10]./10;
 
+orange = [0.8500, 0.3250, 0.0980];
+
 
 % simulate a rational agent
 % 1 = chose symbol
 % 0 = chose lottery
 % row = n symbol
 % col = n choice per sym
-p_sym = [.1 .2 .3 .4 .6 .7 .8 .9];
+p_sym = [.7];
 
 for i = 1:length(p_sym)
     for j = 1:length(p_lot)
+        
         Y(i, j) = p_sym(i) > p_lot(j);
+%         if p_lot(j) == .3
+%            Y(i, j) = p_sym(i) < p_lot(j);
+% 
+%         end
     end
 end
 % 
@@ -42,31 +49,49 @@ options = optimset(...
     'MaxIter', 10000,...
     'MaxFunEval', 10000);
 [params, nll] = fmincon(...
-    @(x) tofit(x, X, Y),...
+    @(x) tofit_mle2(x, X, Y),...
     [1, ones(1, length(p_sym)) .* .5],...
     [], [], [], [],...
     [0.01, zeros(1, length(p_sym))],...
-    [inf, ones(1, length(p_sym))],...
+    [100, ones(1, length(p_sym))],...
     [],...
     options...
     );
 
-% plot behavioral data
-figure
-plot(X, Y, 'linewidth', 2);
-title('Behavior');
-
+% % plot behavioral data
+% figure
+% plot(X, Y, 'linewidth', 2);
+% title('Behavior');
+% 
 
 % plot fitted curves
 figure
 for i = 1:length(p_sym)
-    plot(X, logfun(X, params(i+1), params(1)), 'linewidth', 2);
+    lin3 = plot(X.*100, logfun(X, params(i+1), params(1)).*100, 'linewidth', 2, 'color', orange);
+    hold on
+    %scatter(X.*100, Y.*100, 80, 'markerfacecolor', orange, 'markeredgecolor', 'w', 'markerfacealpha', .7)
+
+    xlim([-10, 110])
+    ylim([-10, 110])
     hold on
 end
-title('Fit');
+%title('Fit');
+xlabel('S-option p(win) (%)');
+ylabel('P(choose E-option) (%)');
 
+lin1 = plot([10, 90], [50, 50], 'color', 'k', 'linestyle', ':');
+
+disp(params)
+
+[xout, yout] = intersections(lin3.XData, lin3.YData, lin1.XData, lin1.YData);
+scatter(xout, yout, 80, 'markerfacecolor', orange, 'markeredgecolor', 'w')
+set(gca, 'tickdir', 'out');
+set(gca, 'fontsize', 15);
+box off
 %p.Color(4) = .8;
-
+H=gca;
+H.LineWidth=1.3
+saveas(gcf, 't1.png');
 
 % plot estimates
 figure
