@@ -30,7 +30,7 @@ filenames = {
    'block_complete_mixed',  'block_complete_mixed_2s',...
    'block_complete_mixed_2s_amb_final',...
    'block_complete_mixed_2s_amb_heuristic'};
-filenames = {'new_data'};
+filenames = {'block_complete_mixed_2s_nofixed'};
 
 folder = 'data';
 
