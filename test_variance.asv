@@ -1,0 +1,18 @@
+%-------------------------------------------------------------------------
+init;
+%-------------------------------------------------------------------------
+
+selected_exp = [1.1];
+
+for exp_num = selected_exp
+    num = num + 1;
+    
+    data = de.extract_LE(exp_num);
+    
+    p = unique(data.p1);
+    for i = 1:length(p)
+    for sub = 1:data.nsub
+        out(sub, i) = mean([...
+            data.out(sub, data.cho(sub, :)==1).*(data.p1(sub,:)==p(i)));...
+            data.cfout(sub, data.cho(sub, :)==2).*(data.p1(sub,:)==p(i)))]);
+    end
