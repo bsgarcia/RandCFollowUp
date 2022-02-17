@@ -24,7 +24,7 @@ for exp_num = selected_exp
     num = num + 1;
     
     data = de.extract_ED(exp_num);
-    LE = de.extract_LE(exp_num);
+    LE = de.extract_nofixed_LE(exp_num);
     
     nsub = data.nsub;
     p1 = data.p1;

@@ -9,9 +9,9 @@ show_current_script_name(mfilename('fullpath'));
 selected_exp = [1.1, 1.2];
 modalities = {'LE', 'ES', 'EE', 'SP'};
 displayfig = 'on';
-colors = [blue;orange;green;magenta];
+colors = [blue; orange;green;magenta];
 % filenames
-filename = 'FigAmbViolin';
+filename = 'lastfig';
 figfolder = 'fig';
 
 figname = sprintf('%s/%s.svg', figfolder, filename);
@@ -26,7 +26,7 @@ stats_data = table();
 
 
 figure('Units', 'centimeters',...
-    'Position', [0,0,5.3*length(selected_exp), 5.3/1.25], 'visible', displayfig)
+    'Position', [0,0,5.3, 5.3/1.25], 'visible', displayfig)
 
 num = 0;
 sub_count = 0;
@@ -62,11 +62,11 @@ for exp_num = selected_exp
             
             case 'LE'
                 
-                if sess == 1
+%                 if sess == 1
                     sim_params.model = 3;
-                else
-                    sim_params.model = 1;
-                end
+%                 else
+%                     sim_params.model = 1;
+%                 end
                 [midpoints(mod_num, :, :), throw] = get_qvalues(sim_params);
                 
             case {'EE', 'ES'}
@@ -104,7 +104,7 @@ end
 %---------------------------------------------------------------------%
 % Plot                                                                %
 % --------------------------------------------------------------------%
-    subplot(1, length(selected_exp), num)
+    subplot(1, 1, 1)
         
     
     skyline_comparison_plot(slope{1}(:, :, 2),slope{2}(:, :, 2), ...
@@ -122,7 +122,7 @@ end
     plot([1,length(modalities)], [0, 0], 'color', 'k', 'linestyle', ':')
     hold on 
 
-    if num == 1; ylabel('Slope'); end
+    ylabel('Slope');
     
     %title(sprintf('Exp. %s', num2str(exp_num)));w
     set(gca, 'tickdir', 'out');

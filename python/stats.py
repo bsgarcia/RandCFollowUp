@@ -11,7 +11,7 @@ import scipy.stats as stats
 
 
 def main():
-    infos = [dict(dv='score', name='Heil')]
+    infos = [dict(dv='slope', name='lastfig')]
     
 
     # lm(infos)
@@ -283,7 +283,7 @@ def pairwise_ttests(infos):
         pd.set_option('max_columns', None)
         print(df.head())
         res = pg.pairwise_ttests(
-            dv=dv, between='exp_num', subject='subject',
+            dv=dv, within=['exp_num', 'modality'], subject='subject',
             data=df, padjust='bonf', within_first=False, parametric=True)
 
         pg.print_table(res, floatfmt='.6f')

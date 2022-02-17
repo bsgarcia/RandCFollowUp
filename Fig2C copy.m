@@ -27,7 +27,6 @@ for exp_num = selected_exp
     throw = de.extract_ED(exp_num);
     nsym = length(unique(throw.p1));
     p1 = unique(throw.p1)'.*100;
- 
     
     sim_params.exp_num = exp_num;
     sim_params.de = de;

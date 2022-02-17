@@ -45,8 +45,8 @@ for exp_num = selected_exp
     
     for sub = 1:nsub
                              
-        X = zeros(length(p_sym), length(p_sym)-1);
-        Y = zeros(length(p_sym), length(p_sym)-1);
+        X = nan(length(p_sym), length(p_sym)-1);
+        Y = nan(length(p_sym), length(p_sym)-1);
         
         for i = 1:length(p_sym)
             rm = 1:length(p_sym);

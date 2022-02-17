@@ -30,7 +30,8 @@ filenames = {
    'block_complete_mixed',  'block_complete_mixed_2s',...
    'block_complete_mixed_2s_amb_final',...
    'block_complete_mixed_2s_amb_heuristic'};
-filenames = {'block_complete_mixed_2s_nofixed'};
+%filenames = {'nofixed_complete_feedback'};
+filenames = {'block_complete'};
 
 folder = 'data';
 
@@ -44,7 +45,7 @@ n_best_sub = 0;
 
 allowed_nb_of_rows = [...
     258, 288,... %exp 2, 3
-    255, 285,... %exp 1
+    255, 285,... %exp 1de.
     376, 470,... %exp 5
     572,... %exp9
     648, 658,... %exp 6, 7, 8
@@ -55,7 +56,7 @@ allowed_nb_of_rows = [...
 
 
 %-----------------------------------------------------------------------
-% colors
+% colorscl
 %-----------------------------------------------------------------------
 % 
 % colors = [0.3963    0.2461    0.3405;...

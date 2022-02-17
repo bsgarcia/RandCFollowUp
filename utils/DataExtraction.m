@@ -43,7 +43,7 @@ classdef DataExtraction < handle
             idx.cont1 = 14;
             idx.cont2 = 15;
             idx.prolific_id = 2;
-            idx.dbtime = 30;
+            idx.within_sess = 30;
 
             % SIM
             %-------------------------------------------------------------
@@ -176,7 +176,7 @@ classdef DataExtraction < handle
                     
                     
                     if (mean(corr_catch{i, 1}) >= ES_catch_threshold) &&...
-                             (sum(vertcat(rtime{i, :}) > rtime_threshold) < 1) % && (sum(corr1{i, 3}) > 0)
+                             (sum(vertcat(rtime{i, :}) > rtime_threshold) < 1) && (all(data(mask_sub, idx.within_sess)))
                         to_keep(length(to_keep) + 1) = sub;
 
                     end
@@ -450,6 +450,9 @@ classdef DataExtraction < handle
                         temp_trial = data(mask, obj.idx.trial);
                         new_data.real_trial(i, :) = temp_trial(trialorder);
 
+                        temp_within_sess = data(mask, obj.idx.within_sess);
+                        new_data.within_sess(i, :) = temp_within_sess(trialorder);
+
                         %new_data.prolific_id(i, :) = data(mask, obj.idx.prolific_id);
 
 
@@ -559,6 +562,9 @@ classdef DataExtraction < handle
                         new_data.real_trial(i, :) = temp_trial(trialorder);
 
                         new_data.catch(i, :) = data(mask2, obj.idx.catch);
+
+                        temp_within_sess = data(mask, obj.idx.within_sess);
+                        new_data.within_sess(i, :) = temp_within_sess(trialorder);
 
 
                         i = i + 1;
