@@ -31,7 +31,7 @@ filenames = {
    'block_complete_mixed_2s_amb_final',...
    'block_complete_mixed_2s_amb_heuristic'};
 %filenames = {'nofixed_complete_feedback'};
-filenames = {'block_complete'};
+filenames = {'block_complete_simple'};
 
 folder = 'data';
 

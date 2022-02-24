@@ -17,10 +17,10 @@
 % end
 %dd = dd(~isnan(dd))
 
-data = readtable('tt.csv');
+data = readtable('nofixed_complete_feedback.csv');
 
 %d = data(:, strcmp(data.EXP, 'NoFixed1'));
-mask_1 = logical(strcmp(data.EXP, 'NoFixed1'));
+mask_1 = logical(strcmp(data.EXP, 'Feedback2'));
 data = data(mask_1,:);
 %mask_2 = logical(ismember(data.SESSION, [0, 1]));
 %mask = logical(mask_1.*mask_2);
@@ -40,7 +40,7 @@ for i = 1:length(sub_ids)
     if size(data(mask_sub, :),1) > 500
         fprintf('%s,%.2f\n',sub_ids{i}, a.*0.0122+2.5);
     end
-    b = a.*0.0122+2.5;
+    b = a.*0.0132+2.5;
     dd(i) = b;
     %b = mean(data(mask_eli&mask_sess&mask_sub,:).CORRECT_CHOICE);
    
