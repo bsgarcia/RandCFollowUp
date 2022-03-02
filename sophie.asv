@@ -1,4 +1,4 @@
-
+figure
 %
 %
 % %%%%%%%%  Main program %%%%%%%%%%%%%%%%%%
@@ -69,7 +69,9 @@
 % end
 init;
 
-selected_exp = [1];
+selected_exp = [4];
+
+for ns = 1:10
 
 for exp_num = selected_exp
 
@@ -90,19 +92,18 @@ for exp_num = selected_exp
 
     save_params = [];
 
-    [x,ll] = runfit(fit_params);
+    %[x,ll] = runfit(fit_params);
 
 end
-x(:,1) = round(x(:,1),1)*10;
+x(:,1) =ones(LE.nsub, 1) .* ns;
 p_sym = unique(ES.p1);
 p_lot = unique(ES.p2);
 trials = 1:length(LE.cho(1,:));
 
-for i=1:LE.nsub-15
+for i=1:LE.nsub
     for k=1:length(p_sym)
         sample = getsample(LE.out(i, :), LE.cfout(i,:), p_sym(k), LE.cho(i, :), LE.p1(i,:), LE.p2(i,:), trials, x(i,1));
-        disp(p_sym(k))
-        disp(mean(sample==1))
+        
         px = postp(sample);
         
         npx = length(px);
@@ -123,7 +124,7 @@ end
 % plot(p_lot,squeeze(mean(pchoicesym,1))')
 % xlabel('value for symbolic cue')
 % ylabel('p choose non-symbolic cue')
-figure
+subplot(2, 5, ns)
 colors = orange;
 prop = squeeze(mean(pchoicesym, 1));
 pwin = p_sym;
@@ -151,6 +152,7 @@ for i = 1:length(pwin)
         'MarkerEdgeColor', 'w');
     sc2.MarkerFaceAlpha = alpha(i);
 
+    if ismember(n
     ylabel('P(choose E-option) (%)');
 
     xlabel('S-option p(win) (%)');
@@ -165,7 +167,9 @@ set(gca,'TickDir','out')
 set(gca, 'FontSize', 20);
 xticks([0:20:100])
 xtickangle(0)
+title(sprintf('N=%d', ns))
 %    title(['N=',num2str(Nsample)])
+end
 
 function [parameters,ll] = runfit(fit_params)
 
@@ -173,8 +177,8 @@ options = optimset(...
     'Algorithm',...
     'interior-point',...
     'Display', 'off',...
-    'MaxIter',40000,...
-    'MaxFunEval', 40000);
+    'MaxIter',100000,...
+    'MaxFunEval', 100000);
 
 % function [c,ceq] = cons(x)
 %     c(1) = double(~(mod(x, 1)));
@@ -211,9 +215,9 @@ for sub = 1:fit_params.nsub
         fit_params.p1_ED(sub,:),...
         fit_params.p2_LE(sub,:),...
         fit_params.p2_ED(sub,:)),...
-        [4],...
+        [1],...
         [], [], [], [],...
-        [.1], ...
+        [.2], ...
         [11.9],...
         [],...
         options...
@@ -244,7 +248,7 @@ p_lot = unique(p2_ED);
 pchoicelot = nan(length(p_sym), length(p_lot));
 pchoicesym = nan(length(p_sym), length(p_lot));
 trials = 1:length(cho_LE);
-nll = 0;
+ll = 0;
 
 for i = 1:length(p_sym)
     mask_out = logical((((p1_LE == p_sym(i)) .* (cho_LE==1)) + ((p2_LE == p_sym(i)) .* (cho_LE==2))) .* (trials>(length(trials)-x(1))));
@@ -283,10 +287,12 @@ for t = 1:length(cho_ED)
         p = .999;
     end
 
-    nll = nll + log(p);
-  
 
+    ll = ll + log(p); 
+    %disp(log(p))
 end
+
+nll = real(-ll);
 end
 
 

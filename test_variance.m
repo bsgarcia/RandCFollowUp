@@ -4,7 +4,7 @@ init;
 close all
 
 selected_exp = [1];
-ntrial = 10;
+ntrial = 20;
 
 for exp_num = selected_exp
     

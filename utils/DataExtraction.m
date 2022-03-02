@@ -176,7 +176,7 @@ classdef DataExtraction < handle
                     
                     
                     if (mean(corr_catch{i, 1}) >= ES_catch_threshold) &&...
-                             (sum(vertcat(rtime{i, :}) > rtime_threshold) < 1) && (all(data(mask_sub, idx.within_sess)))
+                             (sum(vertcat(rtime{i, :}) > rtime_threshold) < 1) %&& (all(data(mask_sub, idx.within_sess)))
                         to_keep(length(to_keep) + 1) = sub;
 
                     end

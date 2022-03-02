@@ -9,7 +9,7 @@ show_current_script_name(mfilename('fullpath'));
 selected_exp = [1.1, 1.2];
 modalities = {'LE', 'ES', 'EE', 'SP'};
 displayfig = 'on';
-colors = [blue; orange;green;magenta];
+colors = [blue;orange;green;magenta];
 % filenames
 filename = 'lastfig';
 figfolder = 'fig';

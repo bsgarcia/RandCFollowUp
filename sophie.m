@@ -1,4 +1,4 @@
-
+figure
 %
 %
 % %%%%%%%%  Main program %%%%%%%%%%%%%%%%%%
@@ -69,7 +69,12 @@
 % end
 init;
 
-selected_exp = [1];
+selected_exp = [4];
+nsample = 1:3:30;
+num = 0;
+
+for ns = nsample
+    num = num + 1;
 
 for exp_num = selected_exp
 
@@ -90,19 +95,18 @@ for exp_num = selected_exp
 
     save_params = [];
 
-    [x,ll] = runfit(fit_params);
+    %[x,ll] = runfit(fit_params);
 
 end
-x(:,1) = round(x(:,1),1)*10;
+x(:,1) =ones(LE.nsub, 1) .* ns;
 p_sym = unique(ES.p1);
 p_lot = unique(ES.p2);
 trials = 1:length(LE.cho(1,:));
 
-for i=1:LE.nsub-15
+for i=1:LE.nsub
     for k=1:length(p_sym)
         sample = getsample(LE.out(i, :), LE.cfout(i,:), p_sym(k), LE.cho(i, :), LE.p1(i,:), LE.p2(i,:), trials, x(i,1));
-        disp(p_sym(k))
-        disp(mean(sample==1))
+        
         px = postp(sample);
         
         npx = length(px);
@@ -123,7 +127,8 @@ end
 % plot(p_lot,squeeze(mean(pchoicesym,1))')
 % xlabel('value for symbolic cue')
 % ylabel('p choose non-symbolic cue')
-figure
+subn = 1:length(nsample);
+subplot(2, 5, subn(num))
 colors = orange;
 prop = squeeze(mean(pchoicesym, 1));
 pwin = p_sym;
@@ -151,7 +156,9 @@ for i = 1:length(pwin)
         'MarkerEdgeColor', 'w');
     sc2.MarkerFaceAlpha = alpha(i);
 
-    ylabel('P(choose E-option) (%)');
+    if ismember(ns, [1, 6])
+        ylabel('P(choose E-option) (%)');
+    end
 
     xlabel('S-option p(win) (%)');
 
@@ -165,7 +172,9 @@ set(gca,'TickDir','out')
 set(gca, 'FontSize', 20);
 xticks([0:20:100])
 xtickangle(0)
+title(sprintf('N=%d', ns))
 %    title(['N=',num2str(Nsample)])
+end
 
 function [parameters,ll] = runfit(fit_params)
 
