@@ -14,7 +14,7 @@ filename = 'Fig2A';
 % ------------------------------------------------------------------------
 % fixed parameters
 % ------------------------------------------------------------------------
-stats_data = table();
+T_exp = table();
 T_con = table();
 
 % filenames
@@ -23,6 +23,7 @@ figfolder = 'fig';
 
 figname = sprintf('%s/%s.svg', figfolder, filename);
 stats_filename = sprintf('data/stats/%s.csv', filename);
+stats_filename2 = sprintf('data/stats/exp_%s.csv', filename);
 
 
 figure('Renderer', 'painters','Units', 'centimeters',...
@@ -69,7 +70,6 @@ for exp_num = selected_exp
         end
     end
 
-
     for sub = 1:data.nsub
         s1 = mean(data.corr(sub, :));
         s2 = mean(data_ed.corr(sub, :));
@@ -84,7 +84,7 @@ for exp_num = selected_exp
             {'subject', 'exp_num', 'complete', 'block','less_cues', 'score', 'modality'}...
             );
 
-        stats_data = [stats_data; T1];
+        T_exp = [T_exp; T1];
     end
 
     sub_count = sub_count + sub;
@@ -136,5 +136,6 @@ end
 saveas(gcf, figname);
 
 writetable(T_con, stats_filename);
+writetable(T_exp, stats_filename2);
 
-fitlm(stats_data, )
+
