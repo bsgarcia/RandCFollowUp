@@ -82,7 +82,7 @@ for exp_num = selected_exp
                 'MaxFunEval', 10000);
 
             [params(sub, :), nll(sub)] = fmincon(...
-                @(x) tofit_mle2(x, X, Y),...
+                @(x) mle(x, X, Y),...
                 [1, ones(1, length(p_sym)) .* .5],...
                 [], [], [], [],...
                 [0.01, zeros(1, length(p_sym))],...
@@ -164,20 +164,8 @@ for exp_num = selected_exp
 end
 
 
-function nll = tofit(params, X, Y)
-    options = optimset('Display','off');
-    temp = params(1);
-    midpoints = params(2:end);
-    ll = 0;
-    for i = 1:size(Y, 1)
-        yhat = logfun(X(i,:)', midpoints(i), temp);
-        ll = ll + sum(log(yhat) .* Y(i,:)' + log(1-yhat).*(1-Y(i,:)')); 
-    end
-    nll = -ll;
-end
 
-
-function nll = tofit_mle2(params, X, Y)
+function nll = mle(params, X, Y)
 
     options = optimset('Display','off');
     temp = params(1);
