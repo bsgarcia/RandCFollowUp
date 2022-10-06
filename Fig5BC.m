@@ -6,7 +6,7 @@ show_current_script_name(mfilename('fullpath'));
 % parameters of the script                                                %
 %-------------------------------------------------------------------------%
 selected_exp = [5, 6];%, 6.2, 7.1, 7.2];
-displayfig = 'on';
+displayfig = 'off';
 colors = [orange; green];
 zscored = 0;
 
@@ -19,7 +19,7 @@ figfolder = 'fig';
 
 figname1 = sprintf('%s/%s.svg', figfolder, filename1);
 figname2 = sprintf('%s/%s.svg', figfolder, filename2);
-stats_filename = sprintf('data/stats/%s.csv', filename1);
+stats_filename = sprintf('data/stats/%s.csv', [filename1 'C']);
 
 num = 0;
 
