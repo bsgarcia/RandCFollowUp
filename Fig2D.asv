@@ -6,8 +6,8 @@ show_current_script_name(mfilename('fullpath'));
 %-------------------------------------------------------------------------%
 % parameters of the script                                                %
 %-------------------------------------------------------------------------%
-selected_exp = [1, 2, 3, 4];
-modalities = {'LE', 'ES', 'SP'};
+selected_exp = [1,2, 3, 4];
+modalities = {'ES', 'LE'};
 displayfig = 'off';
 colors = [blue;orange;magenta];
 % filenames
@@ -141,19 +141,16 @@ writetable(stats_data, stats_filename);
 
 % 
 T = stats_data;
-T(strcmp(T.modality, 'LE'), 'modality') = {'ES'};
-T(strcmp(stats_data.modality, 'ES'), 'modality') = {'LE'};
-
 T.exp_num = nominal(T.exp_num);
 T.modality = nominal(T.modality);
 % cond_ED = strcmp(T.modality, 'ES');
 % cond_LE = strcmp(T.modality, 'LE');
 % cond_PM = strcmp(T.modality, 'PM');
 % 
-%disp('********************************************');
-%disp('FULL');
-%disp('********************************************');
-%fitlme(T, 'slope ~ exp_num*modality + (1|subject)')%, 'CategoricalVar', {'exp_num', 'modality'})
+disp('********************************************');
+disp('FULL');
+disp('********************************************');
+fitlme(T, 'slope ~ exp_num*modality + (1|subject)')%, 'CategoricalVar', {'exp_num', 'modality'})
 % disp('********************************************');
 % return
 % disp('********************************************');

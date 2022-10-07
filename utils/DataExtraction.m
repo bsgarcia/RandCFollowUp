@@ -898,8 +898,8 @@ classdef DataExtraction < handle
 
                     mask_eli = data(:, obj.idx.elic) == 2;
                     mask_sub = data(:, obj.idx.sub) == sub;
-                    mask_catch = data(:, obj.idx.op1) == 1;
-                    mask_ycatch = data(:, obj.idx.op1) == 0;
+                    mask_catch = (data(:, obj.idx.catch) ~= 1);
+                    mask_ycatch = (data(:, obj.idx.op1) == 0);
 
                     %mask_vs_lot = ismember(data(:, obj.idx.op2), [0, -1]);
                     mask_sess = ismember(data(:, obj.idx.sess), session);
