@@ -281,6 +281,7 @@ classdef DataExtraction < handle
             new_data.name = name;
             new_data.nsub = nsub;
             new_data.exp_num = exp_num;
+            new_data.sub_ids = sub_ids;
 
 
             for isess = 1:length(session)
