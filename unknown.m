@@ -32,7 +32,7 @@ for exp_num = selected_exp
     name = de.get_name_from_exp_num(exp_num);
     nsub = de.get_nsub_from_exp_num(exp_num);
     
-    data = de.extract_ED(exp_num);
+    data = de.extract_ES(exp_num);
     symp = unique(data.p1(1,:));
  
     heur = heuristic(data);
@@ -48,7 +48,7 @@ for exp_num = selected_exp
         sim_params.model = 1;
         
         if length(sess) == 2
-            d = de.extract_ED(...
+            d = de.extract_ES(...
                 str2num(sprintf('%d.%d', exp_num, sess(i)+1)));
         else
             d = data;

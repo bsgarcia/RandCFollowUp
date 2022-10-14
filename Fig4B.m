@@ -5,7 +5,7 @@ init;
 %-------------------------------------------------------------------------%
 % parameters of the script                                                %
 %-------------------------------------------------------------------------%
-selected_exp = [7];
+selected_exp = [5];
 displayfig = 'on';
 colors = [orange];
 % filenames
@@ -29,6 +29,8 @@ for exp_num = selected_exp
     p1 = data.p1;
     p2 = data.p2;
     cho = data.cho;
+    numel(cho)
+    return
    
     % ---------------------------------------------------------------------
     % Compute for each symbol p of chosing depending on described cue value
