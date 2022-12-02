@@ -1,7 +1,7 @@
 %-------------------------------------------------------------------------
 init;
 %-------------------------------------------------------------------------
-selected_exp = [9.1];
+selected_exp = [4.1, 4.2];
 displayfig = 'on';
 
 figure('Renderer', 'painters','Units', 'centimeters',...
@@ -11,7 +11,7 @@ num = 0;
 filename = 'Fig2C';
 figfolder = 'fig';
 
-figname = sprintf('%s/%s.svg', figfolder, filename);
+figname = sprintf('%s/%s.png', figfolder, filename);
 
 for exp_num = selected_exp
     num = num + 1;
@@ -44,14 +44,14 @@ for exp_num = selected_exp
                 
     midpoints2 = param.midpoints;
     
-    sim_params.exp_num = exp_num;
-    sim_params.de = de;
-    sim_params.sess = sess;
-    sim_params.exp_name = name;
-    sim_params.nsub = nsub;
-                    
-    sim_params.model = 2;
-    [midpoints3, throw] = get_qvalues(sim_params);
+%     sim_params.exp_num = exp_num;
+%     sim_params.de = de;
+%     sim_params.sess = sess;
+%     sim_params.exp_name = name;
+%     sim_params.nsub = nsub;
+%                     
+%     sim_params.model = 2;
+%     [midpoints3, throw] = get_qvalues(sim_params);
     
     ev = unique(p1);
     varargin = ev;
@@ -66,12 +66,12 @@ for exp_num = selected_exp
     slope2 = add_linear_reg(midpoints2.*100, ev, orange);
     hold on
 
-    slope3 = add_linear_reg(midpoints3.*100, ev, magenta);
-    hold on
-    
-    brick_comparison_plot_3(...
-        midpoints1'.*100,midpoints2'.*100,midpoints3'.*100,...
-        blue, orange, magenta, ...
+%     slope3 = add_linear_reg(midpoints3.*100, ev, magenta);
+%     hold on
+%     
+    brick_comparison_plot(...
+        midpoints1'.*100,midpoints2'.*100,...
+        blue, orange, ...
         x_lim, [-8, 108], fontsize,...
         '',...
         '',...
@@ -89,5 +89,7 @@ for exp_num = selected_exp
 
 end
 
-saveas(gcf, figname);
+%saveas(gcf, figname);
+f = gcf;
+exportgraphics(f, figname,'Resolution',1000)
 

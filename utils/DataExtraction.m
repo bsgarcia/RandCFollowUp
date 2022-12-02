@@ -899,12 +899,12 @@ classdef DataExtraction < handle
 
                     mask_eli = data(:, obj.idx.elic) == 2;
                     mask_sub = data(:, obj.idx.sub) == sub;
-                    mask_catch = (data(:, obj.idx.catch) ~= 1);
-                    mask_ycatch = (data(:, obj.idx.op1) == 0);
+                    mask_catch = (data(:, obj.idx.catch) == 1);
+                    mask_ycatch = (data(:, obj.idx.op1) == 1);
 
                     %mask_vs_lot = ismember(data(:, obj.idx.op2), [0, -1]);
                     mask_sess = ismember(data(:, obj.idx.sess), session);
-                    mask = logical(mask_sub .* mask_sess .* mask_eli .* mask_catch);
+                    mask = logical(mask_sub .* mask_sess .* mask_eli .* mask_catch .* mask_ycatch);
                     mask2 = logical(mask_sub .* mask_sess .* mask_eli .* mask_ycatch);
 
 
@@ -916,7 +916,6 @@ classdef DataExtraction < handle
 
                     new_data.ctch_corr(i, :) = data(mask2, obj.idx.corr);
                     new_data.ctch_cho(i, :) = data(mask2, obj.idx.cho);
-
 
                     temp_corr = data(mask, obj.idx.corr);
                     new_data.corr(i, :) = temp_corr(trialorder);

@@ -25,10 +25,7 @@ format long g
 %------------------------------------------------------------------------
 % filenames and folders
 filenames = {
-   'interleaved_incomplete', 'block_incomplete', 'block_complete',...
-   'block_complete_simple',...
-   'block_complete_mixed',  'block_complete_mixed_2s','block_complete_mixed_2s_amb_heuristic',...
-   'block_complete_mixed_2s_amb_final', 'incentivize', 'evoutcome'...
+   'block_complete_mixed_2s_nofixed','nofixed_complete_feedback','nofixed_complete_feedback_2', 'evoutcome'...
    };
 %filenames = {'evoutcome'};
 folder = 'data/raw/';
@@ -50,7 +47,8 @@ allowed_nb_of_rows = [...
     742, 752,746 ... %exp 6, 7, 8
     216,... %exp 4
     583, 611, ... % exp incentivie
-    610, 638, % exp ev outcome  
+    610, 638, ... % exp ev outcome  
+    566+12*2+4,566+(12*2+4)*2 ... % exp 10
     ];
 
 

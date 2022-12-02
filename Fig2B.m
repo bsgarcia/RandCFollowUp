@@ -5,14 +5,14 @@ init;
 %-------------------------------------------------------------------------%
 % parameters of the script                                                %
 %-------------------------------------------------------------------------%
-selected_exp = [5,6];
+selected_exp = [4.1, 4.2];
 displayfig = 'off';
 colors = [orange];
 % filenames
 filename = 'Fig2B';
 figfolder = 'fig';
 
-figname = sprintf('%s/%s.svg', figfolder, filename);
+figname = sprintf('%s/%s.png', figfolder, filename);
 stats_filename = sprintf('data/stats/%s.csv', filename);
 
 
@@ -97,4 +97,6 @@ for exp_num = selected_exp
     clear pp p_lot p_sym temp err_prop prop i
    
 end
-saveas(gcf, figname);
+f = gcf;
+exportgraphics(f, figname,'Resolution',1000)
+%saveas(gcf, figname);

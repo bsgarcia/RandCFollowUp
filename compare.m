@@ -8,10 +8,10 @@ show_current_script_name(mfilename('fullpath'));
 %-------------------------------------------------------------------------%
 selected_exp = [4.1, 4.2];
 modalities = {'LE', 'ES', 'EE', 'SP'};
-displayfig = 'off';
+displayfig = 'on';
 colors = [blue;orange;green;magenta];
 % filenames
-filename = 'Fig2D';
+filename = 'lastfig';
 figfolder = 'fig';
 
 figname = sprintf('%s/%s.png', figfolder, filename);
@@ -26,13 +26,12 @@ stats_data = table();
 
 
 figure('Units', 'centimeters',...
-    'Position', [0,0,5.3*length(selected_exp), 5.3/1.25], 'visible', displayfig)
+    'Position', [0,0,5.3, 5.3/1.25], 'visible', displayfig)
 
 num = 0;
 sub_count = 0;
 for exp_num = selected_exp
     num = num + 1;
-    disp(num)
     
     %---------------------------------------------------------------------%
     % get data parameters                                                           %
@@ -47,7 +46,7 @@ for exp_num = selected_exp
     
     % prepare data structure
     midpoints = nan(length(modalities), nsub, nsym);
-    slope = nan(length(modalities), nsub, 2);
+    %slope = nan(length(modalities), nsub, 2);
     reshape_midpoints = nan(nsub, nsym);
     
     sim_params.exp_num = exp_num;
@@ -62,7 +61,12 @@ for exp_num = selected_exp
         switch (modalities{mod_num})
             
             case 'LE'
-                sim_params.model = 1;
+                
+%                 if sess == 1
+                    sim_params.model = 1;
+%                 else
+%                     sim_params.model = 1;
+%                 end
                 [midpoints(mod_num, :, :), throw] = get_qvalues(sim_params);
                 
             case {'EE', 'ES'}
@@ -80,13 +84,13 @@ for exp_num = selected_exp
                   
         % fill data
         reshape_midpoints(:, :) = midpoints(mod_num, :, :);
-        slope(mod_num,:,:) = add_linear_reg(...
+        slope{num}(mod_num,:,:) = add_linear_reg(...
             reshape_midpoints.*100, p1, colors(mod_num, :));
         
         % fill data for stats
         for sub = 1:nsub
             T1 = table(...
-                sub+sub_count, num, slope(mod_num, sub, 2),...
+                sub+sub_count, num, slope{num}(mod_num, sub, 2),...
                 {modalities{mod_num}}, 'variablenames',...
                 {'subject', 'exp_num', 'slope', 'modality'}...
                 );
@@ -95,13 +99,15 @@ for exp_num = selected_exp
     end
     sub_count = sub_count+sub;
     
-    %---------------------------------------------------------------------%
-    % Plot                                                                %
-    % --------------------------------------------------------------------%
-    subplot(1, length(selected_exp), num)
+end
+
+%---------------------------------------------------------------------%
+% Plot                                                                %
+% --------------------------------------------------------------------%
+    subplot(1, 1, 1)
         
     
-    skylineplot(slope(:, :, 2), 8,...
+    skyline_comparison_plot(slope{1}(:, :, 2),slope{2}(:, :, 2), ...
         colors,...
         -1.2,...
         1.5,...
@@ -111,22 +117,18 @@ for exp_num = selected_exp
         '',...
         modalities);
     
-    %title(sprintf('Exp. %s', num2str(exp_num)));
+    %title(sprintf('Sess. %s', num2str(sess)));
     hold on 
     plot([1,length(modalities)], [0, 0], 'color', 'k', 'linestyle', ':')
     hold on 
 
-    if num == 1; ylabel('Slope'); end
+    ylabel('Slope');
     
     %title(sprintf('Exp. %s', num2str(exp_num)));w
     set(gca, 'tickdir', 'out');
     box off
-    %set(gca, 'fontname', 'arial');
-    set(gca, 'fontsize', fontsize);
-
+    set(gca, 'fontname', 'arial');
     
-end
-
 
 %-------------------------------------------------------------------------%
 % Save fig and stats                                                      %
@@ -134,28 +136,24 @@ end
 % save fig
 mkdir('fig/exp', figfolder);
 %saveas(gcf, figname);
-%saveas(gcf, figname);
 f = gcf;
 exportgraphics(f, figname,'Resolution',1000)
+
+
 % save stats file
 mkdir('data', 'stats');
 writetable(stats_data, stats_filename);
 
 % 
-T = stats_data;
-T(strcmp(T.modality, 'LE'), 'modality') = {'ES'};
-T(strcmp(stats_data.modality, 'ES'), 'modality') = {'LE'};
-
-T.exp_num = nominal(T.exp_num);
-T.modality = nominal(T.modality);
+% T = stats_data;
 % cond_ED = strcmp(T.modality, 'ES');
 % cond_LE = strcmp(T.modality, 'LE');
 % cond_PM = strcmp(T.modality, 'PM');
 % 
-%disp('********************************************');
-%disp('FULL');
-%disp('********************************************');
-%fitlme(T, 'slope ~ exp_num*modality + (1|subject)')%, 'CategoricalVar', {'exp_num', 'modality'})
+% disp('********************************************');
+% disp('FULL');
+% disp('********************************************');
+% fitlme(T, 'slope ~ exp_num*modality + (1|subject)')% 'CategoricalVar', {'exp_num', 'modality'})
 % disp('********************************************');
 % return
 % disp('********************************************');
