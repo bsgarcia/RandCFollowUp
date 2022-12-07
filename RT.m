@@ -5,21 +5,21 @@ show_current_script_name(mfilename('fullpath'));
 %-------------------------------------------------------------------------%
 % parameters of the script                                                %
 %-------------------------------------------------------------------------%
-selected_exp = [3.2];%, 6.2, 7.1, 7.2];
+selected_exp = [3.1, 3.2];%, 6.2, 7.1, 7.2];
 displayfig = 'on';
 colors = [orange; green];
 zscored = 0;
 
 stats_data = table();
 
-filename1 = 'Fig5B';
-filename2 = 'Fig5C';
+filename1 = 'RT1';
+filename2 = 'RT2';
 
 figfolder = 'fig';
 
-figname1 = sprintf('%s/%s.svg', figfolder, filename1);
-figname2 = sprintf('%s/%s.svg', figfolder, filename2);
-stats_filename = sprintf('data/stats/%s.csv', [filename1 'C']);
+figname1 = sprintf('%s/%s.png', figfolder, filename1);
+figname2 = sprintf('%s/%s.png', figfolder, filename2);
+stats_filename = 'data/stats/RT_evoutcome.csv';
 
 num = 0;
 
@@ -63,65 +63,72 @@ for exp_num = selected_exp
         end
     end
 
-    sub_count = sub_count + sub;
+    %sub_count = sub_count + sub;
+    if zscored
+        y1 = -3;
+        y2 = 1;
+    else
+        if exp_num == 3.1
+            y1 = 0;
+            y2 = 300;
+        elseif exp_num == 3.2
+            y1 = -100;
+            y2 = 300;
+        end
+    end
 
+
+    x2 = e';
+    x1 = d';
+    x3 = ee';
+
+    labely = 'Median reaction time per subject';
+    figure('Units', 'centimeters',...
+        'Position', [0,0,5.3*2, 5.3/1.25*1.2], 'visible', displayfig)
+    subplot(1, 2, 1)
+    skylineplot({x1; x2; x3}, 8, [orange; orange; green],...
+        0, 5000,...
+        fontsize,...
+        '',...
+        '',...
+        '',...
+        {'ES_{s}', 'ES_{e}', 'EE'});
+
+    hold on
+    set(gca, 'tickdir', 'out');
+    set(gca,'fontname','arial')  % Set it to times
+    box off;
+    ylabel(labely)
+   % saveas(gcf, figname1);
+    
+    subplot(1, 2, 2)
+
+    %figure('Units', 'centimeters',...
+   %     'Position', [0,0,5.3, 5.3/1.25*1.2], 'visible', displayfig)%
+    brickplot({x2-x1; x3-x1}, ...
+        colors,...
+        [y1, y2],...
+        fontsize,...
+        '',...
+        '',...
+        '',...
+        {'ES_{e}', 'EE'}, 1, [0, 20], [5, 15], 1, 0);
+
+    set(gca,'fontname','arial')  % Set it to times
+    ylabel('ES_{s} - x')
+
+    % data,colors,y_lim,fontsize,mytitle, ...
+    %     x_label,y_label,varargin, noscatter, x_lim, x_values, Wbar, median)
+    set(gca, 'tickdir', 'out');
+    box off;
+    f = gcf;
+    exportgraphics(f, figname2,'Resolution',1000)
 end
-
-
-
-if zscored
-    y1 = -3;
-    y2 = 1;
-else
-    y1 = 0;
-    y2 = 300;
-end
-
-
-x2 = e';
-x1 = d';
-x3 = ee';
-
-labely = 'Median reaction time per subject';
-figure('Units', 'centimeters',...
-    'Position', [0,0,5.3*1.5, 5.3/1.25*1.2], 'visible', displayfig)
-
-skylineplot({x1; x2; x3}, 8, [orange; orange; green],...
-    0, 5000,...
-    fontsize,...
-    'Exp. 5, 6',...
-    '',...
-    '',...
-    {'ES_{s}', 'ES_{e}', 'EE'});
-
-hold on
-set(gca, 'tickdir', 'out');
-set(gca,'fontname','arial')  % Set it to times
-box off;
-saveas(gcf, figname1);
-
-figure('Units', 'centimeters',...
-    'Position', [0,0,5.3, 5.3/1.25*1.2], 'visible', displayfig)
-brickplot({x2-x1; x3-x1}, ...
-    colors,...
-    [y1, y2],...
-    fontsize,...
-    'Exp. 5, 6',...
-    '',...
-    '',...
-    {'ES_{e}', 'EE'}, 1, [0, 20], [5, 15], 1, 0);
-set(gca,'fontname','arial')  % Set it to times
-
-% data,colors,y_lim,fontsize,mytitle, ...
-%     x_label,y_label,varargin, noscatter, x_lim, x_values, Wbar, median)
-set(gca, 'tickdir', 'out');
-box off;
-
-
-saveas(gcf, figname2);
 
 % save stats file
 writetable(stats_data, stats_filename);
+f = gcf;
+exportgraphics(f, figname,'Resolution',1000)
 
 % ------------------------------------------------------------------------%
 

@@ -5,7 +5,7 @@
 init;
 % -------------------------------------------------------------------%
 
-selected_exp = [1.1,3.1, 3.2];
+selected_exp = [1.2, 2.1, 2.2];
 %selected_exp = selected_exp(1);
 sessions = [0, 1];
 
@@ -26,14 +26,31 @@ for exp_num = selected_exp
     % -------------------------------------------------------------------%
     % LEARNING
     % -------------------------------------------------------------------%
-    data = de.extract_LE(exp_num);
+    data = de.extract_nofixed_LE(exp_num);
     % set parameters
-    fit_params.cho = data.cho;
-    fit_params.cfcho = data.cfcho;
-    fit_params.out = data.out==1;
-    fit_params.cfout = data.cfout==1;
-    fit_params.con = data.con;
-    fit_params.fit_cf = (exp_num>2);
+    for i = 1:data.nsub
+        data.cont1(i, ismember(data.cont1(i,:), [6, 7, 8, 9])) = data.cont1(i, ismember(data.cont1(i,:), [6, 7, 8, 9])) - 1;
+        data.cont2(i, ismember(data.cont2(i,:), [6, 7, 8, 9])) = data.cont2(i, ismember(data.cont2(i,:), [6, 7, 8, 9])) - 1;
+
+        cont1 = data.cont1(i, data.cho(i,:)==1);
+        cont2 = data.cont2(i,data.cho(i,:)==2);
+        con1 = data.cont2(i, data.cho(i,:)==1);
+        con2 = data.cont1(i, data.cho(i,:)==2);
+        out1 = data.out(i, data.cho(i,:)==1);
+        out2 = data.out(i,data.cho(i,:)==2);
+        cfout1 = data.cfout(i,data.cho(i,:)==1);
+        cfout2 = data.cfout(i,data.cho(i,:)==2);
+        cho(i,:) = [cont1 cont2];
+        out(i,:) = [out1 out2];
+        cfout(i,:) = [cfout1 cfout2];
+        con(i,:) = [con1 con2];
+    end
+    fit_params.cho = cho;
+    fit_params.cfcho =[];
+    fit_params.out = out==1;
+    fit_params.cfout = cfout==1;
+    fit_params.con = con;
+    fit_params.fit_cf = true;
     fit_params.ntrials = size(data.cho, 2);
     fit_params.models = learning_model;
     fit_params.model = 1;
@@ -115,11 +132,11 @@ function [parameters,ll] = ...
                     x,...
                     fit_params.con(sub, :),...
                     fit_params.cho(sub, :),...
-                    fit_params.cfcho(sub, :),...
+                    [],...
                     fit_params.out(sub, :),...
                     fit_params.cfout(sub, :),...
                     fit_params.q,...
-                    fit_params.ntrials, model, fit_params.decision_rule,...
+                    fit_params.ntrials, 2, fit_params.decision_rule,...
                     fit_params.fit_cf),...
                 fmincon_params.init_value{model},...
                 [], [], [], [],...

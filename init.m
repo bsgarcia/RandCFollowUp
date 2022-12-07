@@ -25,7 +25,7 @@ format long g
 %------------------------------------------------------------------------
 % filenames and folders
 filenames = {
-   'block_complete_mixed_2s_nofixed','nofixed_complete_feedback','nofixed_complete_feedback_2', 'evoutcome'...
+   'block_complete_mixed_2s_nofixed','nofixed_complete_feedback', 'evoutcome'...
    };
 %filenames = {'evoutcome'};
 folder = 'data/raw/';

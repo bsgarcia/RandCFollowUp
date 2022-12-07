@@ -891,7 +891,6 @@ classdef DataExtraction < handle
             new_data.nsub = nsub;
             new_data.exp_num = exp_num;
 
-         
             i = 1;
             for id = 1:length(sub_ids)
                 try
@@ -899,14 +898,18 @@ classdef DataExtraction < handle
 
                     mask_eli = data(:, obj.idx.elic) == 2;
                     mask_sub = data(:, obj.idx.sub) == sub;
-                    mask_catch = (data(:, obj.idx.catch) == 1);
-                    mask_ycatch = (data(:, obj.idx.op1) == 1);
+                    mask_catch = (ismember(data(:, obj.idx.catch), [0,1]) );
+                    %mask_catch = (data(:, obj.idx.catch) == 1);
+                    mask_sym = (data(:, obj.idx.op1) == 1);
+
+                    %mask_ycatch = (data(:, obj.idx.op1) == 1);
+
+                    mask_ycatch = (data(:, obj.idx.catch) == 1);
 
                     %mask_vs_lot = ismember(data(:, obj.idx.op2), [0, -1]);
                     mask_sess = ismember(data(:, obj.idx.sess), session);
-                    mask = logical(mask_sub .* mask_sess .* mask_eli .* mask_catch .* mask_ycatch);
+                    mask = logical(mask_sub .* mask_sess .* mask_eli .* mask_catch .* mask_sym);
                     mask2 = logical(mask_sub .* mask_sess .* mask_eli .* mask_ycatch);
-
 
                     [noneed, trialorder] = sort(data(mask, obj.idx.trial));
                     %[noneed, trialorder] = sort(data(mask, obj.idx.trial));

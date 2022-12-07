@@ -2,7 +2,7 @@
 init;
 show_current_script_name(mfilename('fullpath'));
 %-------------------------------------------------------------------------
-selected_exp = [4.1, 4.2];
+selected_exp = [1.1, 1.2, 2.1, 2.2, 3.1, 3.2];
 
 displayfig = 'on';
 force = true;

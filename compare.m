@@ -6,12 +6,12 @@ show_current_script_name(mfilename('fullpath'));
 %-------------------------------------------------------------------------%
 % parameters of the script                                                %
 %-------------------------------------------------------------------------%
-selected_exp = [4.1, 4.2];
+selected_exp = [2.1, 2.2];
 modalities = {'LE', 'ES', 'EE', 'SP'};
 displayfig = 'on';
 colors = [blue;orange;green;magenta];
 % filenames
-filename = 'lastfig';
+filename = 'feedback';
 figfolder = 'fig';
 
 figname = sprintf('%s/%s.png', figfolder, filename);
@@ -62,11 +62,12 @@ for exp_num = selected_exp
             
             case 'LE'
                 
-%                 if sess == 1
-                    sim_params.model = 1;
-%                 else
-%                     sim_params.model = 1;
-%                 end
+                %if sess == 1
+                    sim_params.model = 3;
+                %elseif sess == 0
+                %    sim_params.model = 1;
+                %end
+
                 [midpoints(mod_num, :, :), throw] = get_qvalues(sim_params);
                 
             case {'EE', 'ES'}
@@ -97,7 +98,7 @@ for exp_num = selected_exp
             stats_data = [stats_data; T1];
         end
     end
-    sub_count = sub_count+sub;
+    %sub_count = sub_count+sub;
     
 end
 
