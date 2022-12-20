@@ -2,38 +2,33 @@ function lpp = getlpp_learning(params, s, a, cfa, r, cfr, q, ntrials, model, dec
 
     addpath './'
     
-    model_str = {'QLearning', 'AsymmetricQLearning'};
+    model_str = {'QLearning', 'NoFixedQLearning'};
     
-    p = -sum(getp(params, model));
-
-    model = models.(model_str{model})(params, q, 4, 2, ntrials, decision_rule);
-    l = model.fit(s, a, cfa, r, cfr, fit_cf);
+    p = -sum(getp(params));
+ 
+    if model == 1
+        model = models.(model_str{model})(params, q, 4, 2, ntrials, decision_rule);
+        l = model.fit(s, a, cfa, r, cfr, fit_cf);
+    elseif model == 2
+        noption = 8;
+        model = models.(model_str{model})(params, q, noption, ntrials, decision_rule);
+        l = model.fit(s, a, [], r, cfr, fit_cf);
+    end
     
     lpp = p + l;
     
 end
 
 
-function p = getp(params, model)
+function p = getp(params)
     %% log prior of parameters
-    switch model
-        case {1, 3}
             beta1 = params(1); % choice temphiature
             alpha1 = params(2); % policy or factual learning rate
             %% the parameters based on the first optimzation
             pbeta1 = log(gampdf(beta1, 1.2, 5.0));
             palpha1 = log(betapdf(alpha1, 1.1, 1.1));
             p = [pbeta1, palpha1];
-        case 2
-            beta1 = params(1); % choice temphiature
-            alpha1 = params(2); % policy or factual learning rate
-            alpha2 = params(3); % policy or factual learning rate
-            pbeta1 = log(gampdf(beta1, 1.2, 5.0));
-            palpha1 = log(betapdf(alpha1, 1.1, 1.1));
-            palpha2 = log(betapdf(alpha2, 1.1, 1.1));
-            p = [pbeta1, palpha1, palpha2];
-
-    end
+      
   
 end
 

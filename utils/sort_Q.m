@@ -4,6 +4,7 @@ function new_Q = sort_Q(Q)
     else
         map = [2 4 3 1];
     end
+    
     for i = 1:size(Q, 1)
         
         t_Q(1:size(Q,2), 1:2) = Q(i, :, :);
